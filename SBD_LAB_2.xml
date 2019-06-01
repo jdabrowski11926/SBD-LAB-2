@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Export generator="Cache" version="25" zv="Cache for Windows (x86-64) 2018.1.2 (Build 309U_SU)" ts="2019-06-01 19:18:16">
+<Export generator="Cache" version="25" zv="Cache for Windows (x86-64) 2018.1.2 (Build 309U_SU)" ts="2019-06-01 19:37:25">
 <Class name="User.Component">
 <Abstract>1</Abstract>
 <TimeChanged>65165,65391.056721</TimeChanged>
@@ -48,7 +48,7 @@
 
 <Class name="User.CPU">
 <Super>User.Component</Super>
-<TimeChanged>65165,65367.577032</TimeChanged>
+<TimeChanged>65165,70509.386214</TimeChanged>
 <TimeCreated>65165,59666.952869</TimeCreated>
 
 <Property name="speed">
@@ -65,7 +65,7 @@
 
 <Method name="getInfo">
 <ReturnType>%String</ReturnType>
-<Implementation><![CDATA[	return "Name: " _ name _ " Cores: " _ cores _ "Speed: " _speed _ " Threads: " _ threads
+<Implementation><![CDATA[	return "Name: " _ name _ " Cores: " _ cores _ "Speed: " _speed _ " Threads: " _ threads _ " Producer name: " _ producer.name
 ]]></Implementation>
 </Method>
 </Class>
@@ -73,7 +73,7 @@
 
 <Class name="User.Customer">
 <Super>%Persistent,%Populate,%XML.Adaptor,%ZEN.DataModel.Adaptor</Super>
-<TimeChanged>65165,66737.626457</TimeChanged>
+<TimeChanged>65165,70431.214941</TimeChanged>
 <TimeCreated>65165,58381.887935</TimeCreated>
 
 <Property name="name">
@@ -88,17 +88,6 @@
 <Property name="emailAddress">
 <Type>%String</Type>
 </Property>
-
-<Method name="showOrders">
-<ReturnType>%String</ReturnType>
-<Implementation><![CDATA[
-	Set result = ""
-	For i=1:1:$Length(orders){
-		Set result = result _ orders.get(i).showDate() _ "\n"
-	}
-	return result
-]]></Implementation>
-</Method>
 
 <Storage name="Default">
 <Type>%Library.CacheStorage</Type>
@@ -134,7 +123,7 @@
 
 <Class name="User.GPU">
 <Super>User.Component</Super>
-<TimeChanged>65165,65361.719643</TimeChanged>
+<TimeChanged>65165,70501.347541</TimeChanged>
 <TimeCreated>65165,59777.641673</TimeCreated>
 
 <Property name="speed">
@@ -152,7 +141,7 @@
 
 <Method name="getInfo">
 <ReturnType>%String</ReturnType>
-<Implementation><![CDATA[	return "Name: " _ name _ " RAM: " _ ram _ " RAM type: " _ ramType _ "Speed: " _speed
+<Implementation><![CDATA[	return "Name: " _ name _ " RAM: " _ ram _ " RAM type: " _ ramType _ "Speed: " _speed _ " Producer name: " _ producer.name
 ]]></Implementation>
 </Method>
 </Class>
@@ -160,7 +149,7 @@
 
 <Class name="User.Order">
 <Super>%Persistent,%Populate,%XML.Adaptor,%ZEN.DataModel.Adaptor</Super>
-<TimeChanged>65165,66681.710521</TimeChanged>
+<TimeChanged>65165,70553.197747</TimeChanged>
 <TimeCreated>65165,58420.843095</TimeCreated>
 
 <Property name="orderDate">
@@ -171,12 +160,6 @@
 <Method name="showComponents">
 <ReturnType>%String</ReturnType>
 <Implementation><![CDATA[	return "showComponents"
-]]></Implementation>
-</Method>
-
-<Method name="getPriceSum">
-<ReturnType>%Integer</ReturnType>
-<Implementation><![CDATA[	return 100
 ]]></Implementation>
 </Method>
 
