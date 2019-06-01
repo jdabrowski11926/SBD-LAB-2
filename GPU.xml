@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25" zv="Cache for Windows (x86-64) 2018.1.2 (Build 309U_SU)" ts="2019-06-01 16:58:48">
+<Class name="User.GPU">
+<Super>User.Component</Super>
+<TimeChanged>65165,60229.308195</TimeChanged>
+<TimeCreated>65165,59777.641673</TimeCreated>
+
+<Property name="ram">
+<Type>%Integer</Type>
+</Property>
+
+<Property name="ramType">
+<Type>%String</Type>
+<Parameter name="VALUELIST" value=",GDDR5,GDDR4,GDDR3,GDDR2,SDRAM,FPMRAM"/>
+</Property>
+
+<Method name="getInfo">
+<ReturnType>%String</ReturnType>
+<Implementation><![CDATA[	return "Name: " _ name _ " RAM: " _ ram _ " RAM type: " _ ramType
+]]></Implementation>
+</Method>
+
+<Method name="getPrice">
+<ReturnType>%Integer</ReturnType>
+<Implementation><![CDATA[	return price
+]]></Implementation>
+</Method>
+</Class>
+</Export>

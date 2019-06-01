@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25" zv="Cache for Windows (x86-64) 2018.1.2 (Build 309U_SU)" ts="2019-06-01 16:58:45">
+<Class name="User.Customer">
+<Super>%Persistent,%Populate,%XML.Adaptor,%ZEN.DataModel.Adaptor</Super>
+<TimeChanged>65165,60296.877757</TimeChanged>
+<TimeCreated>65165,58381.887935</TimeCreated>
+
+<Property name="name">
+<Type>%String</Type>
+<Required>1</Required>
+</Property>
+
+<Index name="nameIndex">
+<Properties>name</Properties>
+<Unique>1</Unique>
+</Index>
+
+<Property name="phoneNumber">
+<Type>%String</Type>
+</Property>
+
+<Property name="emailAddress">
+<Type>%String</Type>
+</Property>
+
+<Method name="showOrders">
+<ReturnType>%String</ReturnType>
+<Implementation><![CDATA[	return "showOrders"
+]]></Implementation>
+</Method>
+
+<Storage name="Default">
+<Type>%Library.CacheStorage</Type>
+<DataLocation>^User.CustomerD</DataLocation>
+<DefaultData>CustomerDefaultData</DefaultData>
+<IdLocation>^User.CustomerD</IdLocation>
+<IndexLocation>^User.CustomerI</IndexLocation>
+<StreamLocation>^User.CustomerS</StreamLocation>
+<Data name="CustomerDefaultData">
+<Structure>listnode</Structure>
+<Subscript/>
+<Value name="1">
+<Value>%%CLASSNAME</Value>
+</Value>
+<Value name="2">
+<Value>name</Value>
+</Value>
+<Value name="3">
+<Value>phoneNumber</Value>
+</Value>
+<Value name="4">
+<Value>emailAddress</Value>
+</Value>
+</Data>
+</Storage>
+</Class>
+</Export>

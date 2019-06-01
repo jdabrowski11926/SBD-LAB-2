@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25" zv="Cache for Windows (x86-64) 2018.1.2 (Build 309U_SU)" ts="2019-06-01 16:58:34">
+<Class name="User.Component">
+<Abstract>1</Abstract>
+<TimeChanged>65165,60709.791688</TimeChanged>
+<TimeCreated>65165,58704.493832</TimeCreated>
+
+<Property name="name">
+<Type>User.Order</Type>
+<Cardinality>one</Cardinality>
+<Inverse>components</Inverse>
+<Relationship>1</Relationship>
+<Required>1</Required>
+</Property>
+
+<Property name="speed">
+<Type>%Float</Type>
+</Property>
+
+<Property name="price">
+<Type>%Float</Type>
+</Property>
+
+<Method name="getInfo">
+<ReturnType>%String</ReturnType>
+<Implementation><![CDATA[	return "getInfo"
+]]></Implementation>
+</Method>
+
+<Method name="getPrice">
+<ReturnType>%Integer</ReturnType>
+<Implementation><![CDATA[	return 10
+]]></Implementation>
+</Method>
+
+<Index name="nameIndex">
+<Properties>name</Properties>
+</Index>
+</Class>
+</Export>

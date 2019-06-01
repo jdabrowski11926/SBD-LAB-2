@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25" zv="Cache for Windows (x86-64) 2018.1.2 (Build 309U_SU)" ts="2019-06-01 16:58:42">
+<Class name="User.CPU">
+<Super>User.Component</Super>
+<TimeChanged>65165,59737.646933</TimeChanged>
+<TimeCreated>65165,59666.952869</TimeCreated>
+
+<Property name="cores">
+<Type>%Integer</Type>
+</Property>
+
+<Property name="threads">
+<Type>%Integer</Type>
+</Property>
+
+<Method name="getInfo">
+<ReturnType>%String</ReturnType>
+<Implementation><![CDATA[	return "Name: " _ name _ " Cores: " _ cores _ " Threads" _ threads
+]]></Implementation>
+</Method>
+
+<Method name="getPrice">
+<ReturnType>%Integer</ReturnType>
+<Implementation><![CDATA[	return price
+]]></Implementation>
+</Method>
+</Class>
+</Export>
