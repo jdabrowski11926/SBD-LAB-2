@@ -1,20 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Export generator="Cache" version="25" zv="Cache for Windows (x86-64) 2018.1.2 (Build 309U_SU)" ts="2019-06-01 17:45:39">
-<Project name="SBD_LAB_2" LastModified="2019-06-01 17:45:38.987204">
-  <Items>
-    <ProjectItem name="User.Component" type="CLS"></ProjectItem>
-    <ProjectItem name="User.CPU" type="CLS"></ProjectItem>
-    <ProjectItem name="User.Customer" type="CLS"></ProjectItem>
-    <ProjectItem name="User.GPU" type="CLS"></ProjectItem>
-    <ProjectItem name="User.Order" type="CLS"></ProjectItem>
-    <ProjectItem name="User.Producer" type="CLS"></ProjectItem>
-  </Items>
-</Project>
-
-
+<Export generator="Cache" version="25" zv="Cache for Windows (x86-64) 2018.1.2 (Build 309U_SU)" ts="2019-06-01 19:18:16">
 <Class name="User.Component">
 <Abstract>1</Abstract>
-<TimeChanged>65165,63748.473248</TimeChanged>
+<TimeChanged>65165,65391.056721</TimeChanged>
 <TimeCreated>65165,58704.493832</TimeCreated>
 
 <Property name="name">
@@ -25,73 +13,19 @@
 <Required>1</Required>
 </Property>
 
-<Property name="speed">
-<Type>%Float</Type>
-</Property>
-
 <Property name="price">
 <Type>%Float</Type>
 </Property>
 
 <Method name="getInfo">
-<ReturnType>%String</ReturnType>
-<Implementation><![CDATA[	return "getInfo"
-]]></Implementation>
-</Method>
-
-<Method name="getPrice">
-<ReturnType>%Integer</ReturnType>
-<Implementation><![CDATA[	return 10
-]]></Implementation>
-</Method>
-
-<Index name="nameIndex">
-<Properties>name</Properties>
-</Index>
-
-<Property name="producer">
-<Type>User.Producer</Type>
-<Cardinality>one</Cardinality>
-<Inverse>components</Inverse>
-<Relationship>1</Relationship>
-</Property>
-
-<Index name="producerIndex">
-<Properties>producer</Properties>
-</Index>
-</Class>
-
-
-<Class name="User.Component">
 <Abstract>1</Abstract>
-<TimeChanged>65165,63748.473248</TimeChanged>
-<TimeCreated>65165,58704.493832</TimeCreated>
-
-<Property name="name">
-<Type>User.Order</Type>
-<Cardinality>one</Cardinality>
-<Inverse>components</Inverse>
-<Relationship>1</Relationship>
-<Required>1</Required>
-</Property>
-
-<Property name="speed">
-<Type>%Float</Type>
-</Property>
-
-<Property name="price">
-<Type>%Float</Type>
-</Property>
-
-<Method name="getInfo">
 <ReturnType>%String</ReturnType>
-<Implementation><![CDATA[	return "getInfo"
-]]></Implementation>
 </Method>
 
 <Method name="getPrice">
+<Final>1</Final>
 <ReturnType>%Integer</ReturnType>
-<Implementation><![CDATA[	return 10
+<Implementation><![CDATA[	return price
 ]]></Implementation>
 </Method>
 
@@ -114,8 +48,12 @@
 
 <Class name="User.CPU">
 <Super>User.Component</Super>
-<TimeChanged>65165,59737.646933</TimeChanged>
+<TimeChanged>65165,65367.577032</TimeChanged>
 <TimeCreated>65165,59666.952869</TimeCreated>
+
+<Property name="speed">
+<Type>%Float</Type>
+</Property>
 
 <Property name="cores">
 <Type>%Integer</Type>
@@ -127,13 +65,7 @@
 
 <Method name="getInfo">
 <ReturnType>%String</ReturnType>
-<Implementation><![CDATA[	return "Name: " _ name _ " Cores: " _ cores _ " Threads" _ threads
-]]></Implementation>
-</Method>
-
-<Method name="getPrice">
-<ReturnType>%Integer</ReturnType>
-<Implementation><![CDATA[	return price
+<Implementation><![CDATA[	return "Name: " _ name _ " Cores: " _ cores _ "Speed: " _speed _ " Threads: " _ threads
 ]]></Implementation>
 </Method>
 </Class>
@@ -141,18 +73,13 @@
 
 <Class name="User.Customer">
 <Super>%Persistent,%Populate,%XML.Adaptor,%ZEN.DataModel.Adaptor</Super>
-<TimeChanged>65165,62848.146049</TimeChanged>
+<TimeChanged>65165,66737.626457</TimeChanged>
 <TimeCreated>65165,58381.887935</TimeCreated>
 
 <Property name="name">
 <Type>%String</Type>
 <Required>1</Required>
 </Property>
-
-<Index name="nameIndex">
-<Properties>name</Properties>
-<Unique>1</Unique>
-</Index>
 
 <Property name="phoneNumber">
 <Type>%String</Type>
@@ -164,7 +91,12 @@
 
 <Method name="showOrders">
 <ReturnType>%String</ReturnType>
-<Implementation><![CDATA[	return "showOrders"
+<Implementation><![CDATA[
+	Set result = ""
+	For i=1:1:$Length(orders){
+		Set result = result _ orders.get(i).showDate() _ "\n"
+	}
+	return result
 ]]></Implementation>
 </Method>
 
@@ -190,13 +122,24 @@
 </Value>
 </Data>
 </Storage>
+
+<Property name="orders">
+<Type>User.Order</Type>
+<Cardinality>many</Cardinality>
+<Inverse>user</Inverse>
+<Relationship>1</Relationship>
+</Property>
 </Class>
 
 
 <Class name="User.GPU">
 <Super>User.Component</Super>
-<TimeChanged>65165,60229.308195</TimeChanged>
+<TimeChanged>65165,65361.719643</TimeChanged>
 <TimeCreated>65165,59777.641673</TimeCreated>
+
+<Property name="speed">
+<Type>%Float</Type>
+</Property>
 
 <Property name="ram">
 <Type>%Integer</Type>
@@ -209,13 +152,7 @@
 
 <Method name="getInfo">
 <ReturnType>%String</ReturnType>
-<Implementation><![CDATA[	return "Name: " _ name _ " RAM: " _ ram _ " RAM type: " _ ramType
-]]></Implementation>
-</Method>
-
-<Method name="getPrice">
-<ReturnType>%Integer</ReturnType>
-<Implementation><![CDATA[	return price
+<Implementation><![CDATA[	return "Name: " _ name _ " RAM: " _ ram _ " RAM type: " _ ramType _ "Speed: " _speed
 ]]></Implementation>
 </Method>
 </Class>
@@ -223,7 +160,7 @@
 
 <Class name="User.Order">
 <Super>%Persistent,%Populate,%XML.Adaptor,%ZEN.DataModel.Adaptor</Super>
-<TimeChanged>65165,60707.612608</TimeChanged>
+<TimeChanged>65165,66681.710521</TimeChanged>
 <TimeCreated>65165,58420.843095</TimeCreated>
 
 <Property name="orderDate">
@@ -264,31 +201,53 @@
 <IndexLocation>^User.OrderI</IndexLocation>
 <StreamLocation>^User.OrderS</StreamLocation>
 <Data name="OrderDefaultData">
-<Structure>listnode</Structure>
-<Subscript/>
 <Value name="1">
 <Value>%%CLASSNAME</Value>
 </Value>
 <Value name="2">
 <Value>orderDate</Value>
 </Value>
+<Value name="3">
+<Value>user</Value>
+</Value>
 </Data>
 </Storage>
+
+<Property name="user">
+<Type>User.Customer</Type>
+<Cardinality>one</Cardinality>
+<Inverse>orders</Inverse>
+<Relationship>1</Relationship>
+</Property>
+
+<Index name="userIndex">
+<Properties>user</Properties>
+</Index>
 </Class>
 
 
 <Class name="User.Producer">
 <Super>%Persistent,%Populate,%XML.Adaptor,%ZEN.DataModel.Adaptor</Super>
-<TimeChanged>65165,63749.526655</TimeChanged>
+<TimeChanged>65165,65509.153225</TimeChanged>
 <TimeCreated>65165,59208.742957</TimeCreated>
 
 <Property name="country">
 <Type>%String</Type>
 </Property>
 
+<Property name="name">
+<Type>%String</Type>
+</Property>
+
 <Property name="founded">
 <Type>%Date</Type>
 </Property>
+
+<Method name="getInfo">
+<ReturnType>%String</ReturnType>
+<Implementation><![CDATA[	return "Name: " _ name _ " Country: " _ country _ " Founded: " _ founded
+]]></Implementation>
+</Method>
 
 <Storage name="Default">
 <Type>%Library.CacheStorage</Type>
@@ -306,6 +265,9 @@
 </Value>
 <Value name="3">
 <Value>founded</Value>
+</Value>
+<Value name="4">
+<Value>name</Value>
 </Value>
 </Data>
 </Storage>
