@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Export generator="Cache" version="25" zv="Cache for Windows (x86-64) 2018.1.2 (Build 309U_SU)" ts="2019-06-01 20:13:25">
-<Class name="User.Component">
+<Export generator="Cache" version="25" zv="Cache for Windows (x86-64) 2018.1.2 (Build 309U_SU)" ts="2019-06-02 10:24:16">
+<Class name="Sbd.Component">
 <Abstract>1</Abstract>
-<TimeChanged>65165,71867.773145</TimeChanged>
+<Super>%Persistent</Super>
+<TimeChanged>65165,80799.650891</TimeChanged>
 <TimeCreated>65165,58704.493832</TimeCreated>
 
 <Property name="name">
-<Type>User.Order</Type>
-<Cardinality>one</Cardinality>
-<Inverse>components</Inverse>
-<Relationship>1</Relationship>
-<Required>1</Required>
+<Type>%String</Type>
 </Property>
 
 <Property name="price">
@@ -29,12 +26,8 @@
 ]]></Implementation>
 </Method>
 
-<Index name="nameIndex">
-<Properties>name</Properties>
-</Index>
-
 <Property name="producer">
-<Type>User.Producer</Type>
+<Type>Sbd.Producer</Type>
 <Cardinality>one</Cardinality>
 <Inverse>components</Inverse>
 <Relationship>1</Relationship>
@@ -43,24 +36,67 @@
 <Index name="producerIndex">
 <Properties>producer</Properties>
 </Index>
+
+<Storage name="Default">
+<Type>%Library.CacheStorage</Type>
+<DataLocation>^Sbd.ComponentD</DataLocation>
+<DefaultData>ComponentDefaultData</DefaultData>
+<IdLocation>^Sbd.ComponentD</IdLocation>
+<IndexLocation>^Sbd.ComponentI</IndexLocation>
+<StreamLocation>^Sbd.ComponentS</StreamLocation>
+<Data name="ComponentDefaultData">
+<Value name="1">
+<Value>%%CLASSNAME</Value>
+</Value>
+<Value name="2">
+<Value>name</Value>
+</Value>
+<Value name="3">
+<Value>price</Value>
+</Value>
+<Value name="4">
+<Value>producer</Value>
+</Value>
+<Value name="5">
+<Value>order</Value>
+</Value>
+</Data>
+</Storage>
+
+<Property name="order">
+<Type>Sbd.Order</Type>
+<Cardinality>one</Cardinality>
+<Inverse>components</Inverse>
+<Relationship>1</Relationship>
+</Property>
+
+<Index name="orderIndex">
+<Properties>order</Properties>
+</Index>
 </Class>
 
 
-<Class name="User.CPU">
-<Super>User.Component</Super>
-<TimeChanged>65165,71900.552803</TimeChanged>
+<Class name="Sbd.CPU">
+<Super>Sbd.Component,%Populate,%Persistent</Super>
+<TimeChanged>65165,85396.953878</TimeChanged>
 <TimeCreated>65165,59666.952869</TimeCreated>
 
 <Property name="speed">
 <Type>%Float</Type>
+<Parameter name="MAXVAL" value="1"/>
+<Parameter name="MINVAL" value="5"/>
 </Property>
 
 <Property name="cores">
 <Type>%Integer</Type>
+<Parameter name="MAXVAL" value="1"/>
+<Parameter name="MINVAL" value="16"/>
 </Property>
 
 <Property name="threads">
 <Type>%Integer</Type>
+<Parameter name="MAXVAL" value="1"/>
+<Parameter name="MINVAL" value="64"/>
 </Property>
 
 <Method name="getInfo">
@@ -68,12 +104,66 @@
 <Implementation><![CDATA[	return "Name: " _ ..name _ " Cores: " _ ..cores _ "Speed: " _ ..speed _ " Threads: " _ ..threads _ " Producer name: " _ ..producer.name
 ]]></Implementation>
 </Method>
+
+<Storage name="Default">
+<Type>%Library.CacheStorage</Type>
+<DefaultData>CPUDefaultData</DefaultData>
+<ExtentSize>10</ExtentSize>
+<Data name="CPUDefaultData">
+<Subscript>"CPU"</Subscript>
+<Value name="1">
+<Value>speed</Value>
+</Value>
+<Value name="2">
+<Value>cores</Value>
+</Value>
+<Value name="3">
+<Value>threads</Value>
+</Value>
+</Data>
+<Property name="%%CLASSNAME">
+<Selectivity>100.0000%</Selectivity>
+<AverageFieldSize>9</AverageFieldSize>
+</Property>
+<Property name="%%ID">
+<Selectivity>1</Selectivity>
+<AverageFieldSize>2</AverageFieldSize>
+</Property>
+<Property name="cores">
+<Selectivity>10.0000%</Selectivity>
+<AverageFieldSize>9</AverageFieldSize>
+</Property>
+<Property name="name">
+<Selectivity>10.0000%</Selectivity>
+<AverageFieldSize>15.1</AverageFieldSize>
+</Property>
+<Property name="order">
+<Selectivity>14.2857%</Selectivity>
+<AverageFieldSize>2</AverageFieldSize>
+</Property>
+<Property name="price">
+<Selectivity>10.0000%</Selectivity>
+<AverageFieldSize>4</AverageFieldSize>
+</Property>
+<Property name="producer">
+<Selectivity>14.2857%</Selectivity>
+<AverageFieldSize>2</AverageFieldSize>
+</Property>
+<Property name="speed">
+<Selectivity>10.0000%</Selectivity>
+<AverageFieldSize>4</AverageFieldSize>
+</Property>
+<Property name="threads">
+<Selectivity>10.0000%</Selectivity>
+<AverageFieldSize>9</AverageFieldSize>
+</Property>
+</Storage>
 </Class>
 
 
-<Class name="User.Customer">
-<Super>%Persistent,%Populate,%XML.Adaptor,%ZEN.DataModel.Adaptor</Super>
-<TimeChanged>65165,71125.194457</TimeChanged>
+<Class name="Sbd.Customer">
+<Super>%Persistent,%Populate</Super>
+<TimeChanged>65165,85395.954829</TimeChanged>
 <TimeCreated>65165,58381.887935</TimeCreated>
 
 <Property name="name">
@@ -83,20 +173,29 @@
 
 <Property name="phoneNumber">
 <Type>%String</Type>
+<Parameter name="PATTERN" value="9N"/>
 </Property>
 
 <Property name="emailAddress">
 <Type>%String</Type>
+<Parameter name="PATTERN" value="5.10A&quot;@gmail.com&quot;"/>
+</Property>
+
+<Property name="orders">
+<Type>Sbd.Order</Type>
+<Cardinality>many</Cardinality>
+<Inverse>customer</Inverse>
+<Relationship>1</Relationship>
 </Property>
 
 <Storage name="Default">
 <Type>%Library.CacheStorage</Type>
-<DataLocation>^User.CustomerD</DataLocation>
+<DataLocation>^Sbd.CustomerD</DataLocation>
 <DefaultData>CustomerDefaultData</DefaultData>
-<IdLocation>^User.CustomerD</IdLocation>
-<IndexLocation>^User.CustomerI</IndexLocation>
-<StreamLocation>^User.CustomerS</StreamLocation>
-<ExtentSize>5</ExtentSize>
+<IdLocation>^Sbd.CustomerD</IdLocation>
+<IndexLocation>^Sbd.CustomerI</IndexLocation>
+<StreamLocation>^Sbd.CustomerS</StreamLocation>
+<ExtentSize>10</ExtentSize>
 <Data name="CustomerDefaultData">
 <Value name="1">
 <Value>%%CLASSNAME</Value>
@@ -117,50 +216,47 @@
 </Property>
 <Property name="%%ID">
 <Selectivity>1</Selectivity>
-<AverageFieldSize>1</AverageFieldSize>
+<AverageFieldSize>2</AverageFieldSize>
 </Property>
 <Property name="emailAddress">
-<Selectivity>20.0000%</Selectivity>
-<AverageFieldSize>4.8</AverageFieldSize>
+<Selectivity>10.0000%</Selectivity>
+<AverageFieldSize>4.7</AverageFieldSize>
 </Property>
 <Property name="name">
-<Selectivity>20.0000%</Selectivity>
-<AverageFieldSize>17.2</AverageFieldSize>
+<Selectivity>10.0000%</Selectivity>
+<AverageFieldSize>16</AverageFieldSize>
 </Property>
 <Property name="phoneNumber">
-<Selectivity>20.0000%</Selectivity>
-<AverageFieldSize>4.8</AverageFieldSize>
+<Selectivity>10.0000%</Selectivity>
+<AverageFieldSize>4.9</AverageFieldSize>
 </Property>
 <SQLMap name="IDKEY">
 <BlockCount>-4</BlockCount>
 </SQLMap>
 </Storage>
-
-<Property name="orders">
-<Type>User.Order</Type>
-<Cardinality>many</Cardinality>
-<Inverse>user</Inverse>
-<Relationship>1</Relationship>
-</Property>
 </Class>
 
 
-<Class name="User.GPU">
-<Super>User.Component</Super>
-<TimeChanged>65165,71724.596293</TimeChanged>
+<Class name="Sbd.GPU">
+<Super>Sbd.Component,%Populate,%Persistent</Super>
+<TimeChanged>65165,85396.706225</TimeChanged>
 <TimeCreated>65165,59777.641673</TimeCreated>
 
 <Property name="speed">
 <Type>%Float</Type>
+<Parameter name="MAXVAL" value="200"/>
+<Parameter name="MINVAL" value="3000"/>
 </Property>
 
 <Property name="ram">
 <Type>%Integer</Type>
+<Parameter name="MAXVAL" value="1"/>
+<Parameter name="MINVAL" value="16"/>
 </Property>
 
 <Property name="ramType">
 <Type>%String</Type>
-<Parameter name="VALUELIST" value=",GDDR5,GDDR4,GDDR3,GDDR2,SDRAM,FPMRAM"/>
+<Parameter name="VALUELIST" value="GDDR5,GDDR4,GDDR3,GDDR2,SDRAM,FPMRAM"/>
 </Property>
 
 <Method name="getInfo">
@@ -168,16 +264,70 @@
 <Implementation><![CDATA[	return "Name: " _ ..name _ " RAM: " _ ..ram _ " RAM type: " _ ..ramType _ "Speed: " _ ..speed _ " Producer name: " _ ..producer.name
 ]]></Implementation>
 </Method>
+
+<Storage name="Default">
+<Type>%Library.CacheStorage</Type>
+<DefaultData>GPUDefaultData</DefaultData>
+<ExtentSize>10</ExtentSize>
+<Data name="GPUDefaultData">
+<Subscript>"GPU"</Subscript>
+<Value name="1">
+<Value>speed</Value>
+</Value>
+<Value name="2">
+<Value>ram</Value>
+</Value>
+<Value name="3">
+<Value>ramType</Value>
+</Value>
+</Data>
+<Property name="%%CLASSNAME">
+<Selectivity>100.0000%</Selectivity>
+<AverageFieldSize>9</AverageFieldSize>
+</Property>
+<Property name="%%ID">
+<Selectivity>1</Selectivity>
+<AverageFieldSize>2</AverageFieldSize>
+</Property>
+<Property name="name">
+<Selectivity>10.0000%</Selectivity>
+<AverageFieldSize>15.1</AverageFieldSize>
+</Property>
+<Property name="order">
+<Selectivity>20.0000%</Selectivity>
+<AverageFieldSize>2</AverageFieldSize>
+</Property>
+<Property name="price">
+<Selectivity>10.0000%</Selectivity>
+<AverageFieldSize>3.8</AverageFieldSize>
+</Property>
+<Property name="producer">
+<Selectivity>20.0000%</Selectivity>
+<AverageFieldSize>2</AverageFieldSize>
+</Property>
+<Property name="ram">
+<Selectivity>10.0000%</Selectivity>
+<AverageFieldSize>8.9</AverageFieldSize>
+</Property>
+<Property name="ramType">
+<Selectivity>33.3333%</Selectivity>
+<AverageFieldSize>5</AverageFieldSize>
+</Property>
+<Property name="speed">
+<Selectivity>10.0000%</Selectivity>
+<AverageFieldSize>3.8</AverageFieldSize>
+</Property>
+</Storage>
 </Class>
 
 
-<Class name="User.Order">
-<Super>%Persistent,%Populate,%XML.Adaptor,%ZEN.DataModel.Adaptor</Super>
-<TimeChanged>65165,72344.263488</TimeChanged>
+<Class name="Sbd.Order">
+<Super>%Persistent,%Populate</Super>
+<TimeChanged>65165,85396.452247</TimeChanged>
 <TimeCreated>65165,58420.843095</TimeCreated>
 
-<Property name="orderDate">
-<Type>%DateTime</Type>
+<Property name="orderId">
+<Type>%Integer</Type>
 <Required>1</Required>
 </Property>
 
@@ -193,37 +343,25 @@
 ]]></Implementation>
 </Method>
 
-<Method name="showDate">
-<ReturnType>%String</ReturnType>
-<Implementation><![CDATA[	return "Data zamowienia: " _ ..orderDate
-]]></Implementation>
-</Method>
-
-<Property name="components">
-<Type>User.Component</Type>
-<Cardinality>many</Cardinality>
-<Inverse>name</Inverse>
-<Relationship>1</Relationship>
-</Property>
-
-<Property name="user">
-<Type>User.Customer</Type>
+<Property name="customer">
+<Type>Sbd.Customer</Type>
 <Cardinality>one</Cardinality>
 <Inverse>orders</Inverse>
 <Relationship>1</Relationship>
 </Property>
 
 <Index name="userIndex">
-<Properties>user</Properties>
+<Properties>customer</Properties>
 </Index>
 
 <Storage name="Default">
 <Type>%Library.CacheStorage</Type>
-<DataLocation>^User.OrderD</DataLocation>
+<DataLocation>^Sbd.OrderD</DataLocation>
 <DefaultData>OrderDefaultData</DefaultData>
-<IdLocation>^User.OrderD</IdLocation>
-<IndexLocation>^User.OrderI</IndexLocation>
-<StreamLocation>^User.OrderS</StreamLocation>
+<IdLocation>^Sbd.OrderD</IdLocation>
+<IndexLocation>^Sbd.OrderI</IndexLocation>
+<StreamLocation>^Sbd.OrderS</StreamLocation>
+<ExtentSize>10</ExtentSize>
 <Data name="OrderDefaultData">
 <Value name="1">
 <Value>%%CLASSNAME</Value>
@@ -234,22 +372,65 @@
 <Value name="3">
 <Value>user</Value>
 </Value>
+<Value name="4">
+<Value>customer</Value>
+</Value>
+<Value name="5">
+<Value>orderId</Value>
+</Value>
 </Data>
+<Property name="%%CLASSNAME">
+<Selectivity>100.0000%</Selectivity>
+<AverageFieldSize>1</AverageFieldSize>
+</Property>
+<Property name="%%ID">
+<Selectivity>1</Selectivity>
+<AverageFieldSize>2</AverageFieldSize>
+</Property>
+<Property name="customer">
+<Selectivity>14.2857%</Selectivity>
+<AverageFieldSize>2</AverageFieldSize>
+</Property>
+<Property name="orderDate">
+<Selectivity>100.0000%</Selectivity>
+<AverageFieldSize>19</AverageFieldSize>
+</Property>
+<Property name="orderId">
+<Selectivity>10.0000%</Selectivity>
+<AverageFieldSize>9</AverageFieldSize>
+</Property>
+<SQLMap name="IDKEY">
+<BlockCount>-4</BlockCount>
+</SQLMap>
+<SQLMap name="userIndex">
+<BlockCount>-4</BlockCount>
+</SQLMap>
 </Storage>
+
+<Property name="components">
+<Type>Sbd.Component</Type>
+<Cardinality>many</Cardinality>
+<Inverse>order</Inverse>
+<Relationship>1</Relationship>
+</Property>
 </Class>
 
 
-<Class name="User.Producer">
-<Super>%Persistent,%Populate,%XML.Adaptor,%ZEN.DataModel.Adaptor</Super>
-<TimeChanged>65165,72342.51978</TimeChanged>
+
+
+<Class name="Sbd.Producer">
+<Super>%Persistent,%Populate</Super>
+<TimeChanged>65165,85396.204774</TimeChanged>
 <TimeCreated>65165,59208.742957</TimeCreated>
 
 <Property name="country">
 <Type>%String</Type>
+<Parameter name="VALUELIST" value="Poland, Germany, Togo, Nikaragua, North Korea"/>
 </Property>
 
 <Property name="name">
 <Type>%String</Type>
+<Parameter name="VALUELIST" value="Intel, Nvidia, AMD, IBM, Microsoft, InterSystems"/>
 </Property>
 
 <Property name="founded">
@@ -262,13 +443,21 @@
 ]]></Implementation>
 </Method>
 
+<Property name="components">
+<Type>Sbd.Component</Type>
+<Cardinality>many</Cardinality>
+<Inverse>producer</Inverse>
+<Relationship>1</Relationship>
+</Property>
+
 <Storage name="Default">
 <Type>%Library.CacheStorage</Type>
-<DataLocation>^User.ProducerD</DataLocation>
+<DataLocation>^Sbd.ProducerD</DataLocation>
 <DefaultData>ProducerDefaultData</DefaultData>
-<IdLocation>^User.ProducerD</IdLocation>
-<IndexLocation>^User.ProducerI</IndexLocation>
-<StreamLocation>^User.ProducerS</StreamLocation>
+<IdLocation>^Sbd.ProducerD</IdLocation>
+<IndexLocation>^Sbd.ProducerI</IndexLocation>
+<StreamLocation>^Sbd.ProducerS</StreamLocation>
+<ExtentSize>10</ExtentSize>
 <Data name="ProducerDefaultData">
 <Value name="1">
 <Value>%%CLASSNAME</Value>
@@ -277,19 +466,35 @@
 <Value>country</Value>
 </Value>
 <Value name="3">
-<Value>founded</Value>
-</Value>
-<Value name="4">
 <Value>name</Value>
 </Value>
+<Value name="4">
+<Value>founded</Value>
+</Value>
 </Data>
-</Storage>
-
-<Property name="components">
-<Type>User.Component</Type>
-<Cardinality>many</Cardinality>
-<Inverse>producer</Inverse>
-<Relationship>1</Relationship>
+<Property name="%%CLASSNAME">
+<Selectivity>100.0000%</Selectivity>
+<AverageFieldSize>1</AverageFieldSize>
 </Property>
+<Property name="%%ID">
+<Selectivity>1</Selectivity>
+<AverageFieldSize>2</AverageFieldSize>
+</Property>
+<Property name="country">
+<Selectivity>10.0000%</Selectivity>
+<AverageFieldSize>5</AverageFieldSize>
+</Property>
+<Property name="founded">
+<Selectivity>10.0000%</Selectivity>
+<AverageFieldSize>5</AverageFieldSize>
+</Property>
+<Property name="name">
+<Selectivity>10.0000%</Selectivity>
+<AverageFieldSize>16.2</AverageFieldSize>
+</Property>
+<SQLMap name="IDKEY">
+<BlockCount>-4</BlockCount>
+</SQLMap>
+</Storage>
 </Class>
 </Export>
