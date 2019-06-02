@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Export generator="Cache" version="25" zv="Cache for Windows (x86-64) 2018.1.2 (Build 309U_SU)" ts="2019-06-02 10:24:16">
+<Export generator="Cache" version="25" zv="Cache for Windows (x86-64) 2018.1.2 (Build 309U_SU)" ts="2019-06-02 13:52:40">
 <Class name="Sbd.Component">
 <Abstract>1</Abstract>
 <Super>%Persistent</Super>
@@ -78,30 +78,69 @@
 
 <Class name="Sbd.CPU">
 <Super>Sbd.Component,%Populate,%Persistent</Super>
-<TimeChanged>65165,85396.953878</TimeChanged>
+<TimeChanged>65166,48053.100875</TimeChanged>
 <TimeCreated>65165,59666.952869</TimeCreated>
 
+<Property name="name">
+<Type>%String</Type>
+<Parameter name="POPSPEC" value="##class(Sbd.CPU).getRandomName()"/>
+</Property>
+
 <Property name="speed">
-<Type>%Float</Type>
-<Parameter name="MAXVAL" value="1"/>
-<Parameter name="MINVAL" value="5"/>
+<Type>%Integer</Type>
+<Parameter name="POPSPEC" value="##class(Sbd.CPU).getRandomSpeed()"/>
 </Property>
 
 <Property name="cores">
 <Type>%Integer</Type>
-<Parameter name="MAXVAL" value="1"/>
-<Parameter name="MINVAL" value="16"/>
+<Parameter name="POPSPEC" value="##class(Sbd.CPU).getRandomCores()"/>
 </Property>
 
 <Property name="threads">
 <Type>%Integer</Type>
-<Parameter name="MAXVAL" value="1"/>
-<Parameter name="MINVAL" value="64"/>
+<Parameter name="POPSPEC" value="##class(Sbd.CPU).getRandomThreads()"/>
 </Property>
 
 <Method name="getInfo">
 <ReturnType>%String</ReturnType>
 <Implementation><![CDATA[	return "Name: " _ ..name _ " Cores: " _ ..cores _ "Speed: " _ ..speed _ " Threads: " _ ..threads _ " Producer name: " _ ..producer.name
+]]></Implementation>
+</Method>
+
+<UDLText name="T">
+<Content><![CDATA[
+// Class methods
+
+]]></Content>
+</UDLText>
+
+<Method name="getRandomName">
+<ClassMethod>1</ClassMethod>
+<ReturnType>%String</ReturnType>
+<Implementation><![CDATA[
+	set tmpList = $LISTBUILD("I3 3770","I5 4700","I7 9700","I7 4700","AMD Super","AMD Mega","AMD TURBO")
+	return $LIST(tmpList, $RANDOM($LISTLENGTH(tmpList)) + 1)
+]]></Implementation>
+</Method>
+
+<Method name="getRandomSpeed">
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Integer</ReturnType>
+<Implementation><![CDATA[	return $RANDOM(3000)+2000
+]]></Implementation>
+</Method>
+
+<Method name="getRandomCores">
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Integer</ReturnType>
+<Implementation><![CDATA[	return $RANDOM(15)+1
+]]></Implementation>
+</Method>
+
+<Method name="getRandomThreads">
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Integer</ReturnType>
+<Implementation><![CDATA[	return $RANDOM(63)+1
 ]]></Implementation>
 </Method>
 
@@ -127,27 +166,27 @@
 </Property>
 <Property name="%%ID">
 <Selectivity>1</Selectivity>
-<AverageFieldSize>2</AverageFieldSize>
+<AverageFieldSize>4</AverageFieldSize>
 </Property>
 <Property name="cores">
-<Selectivity>10.0000%</Selectivity>
-<AverageFieldSize>9</AverageFieldSize>
+<Selectivity>11.1111%</Selectivity>
+<AverageFieldSize>1.2</AverageFieldSize>
 </Property>
 <Property name="name">
-<Selectivity>10.0000%</Selectivity>
-<AverageFieldSize>15.1</AverageFieldSize>
+<Selectivity>16.6667%</Selectivity>
+<AverageFieldSize>7.9</AverageFieldSize>
 </Property>
 <Property name="order">
-<Selectivity>14.2857%</Selectivity>
-<AverageFieldSize>2</AverageFieldSize>
+<Selectivity>16.6667%</Selectivity>
+<AverageFieldSize>3</AverageFieldSize>
 </Property>
 <Property name="price">
 <Selectivity>10.0000%</Selectivity>
 <AverageFieldSize>4</AverageFieldSize>
 </Property>
 <Property name="producer">
-<Selectivity>14.2857%</Selectivity>
-<AverageFieldSize>2</AverageFieldSize>
+<Selectivity>16.6667%</Selectivity>
+<AverageFieldSize>3</AverageFieldSize>
 </Property>
 <Property name="speed">
 <Selectivity>10.0000%</Selectivity>
@@ -155,7 +194,7 @@
 </Property>
 <Property name="threads">
 <Selectivity>10.0000%</Selectivity>
-<AverageFieldSize>9</AverageFieldSize>
+<AverageFieldSize>1.9</AverageFieldSize>
 </Property>
 </Storage>
 </Class>
@@ -163,7 +202,7 @@
 
 <Class name="Sbd.Customer">
 <Super>%Persistent,%Populate</Super>
-<TimeChanged>65165,85395.954829</TimeChanged>
+<TimeChanged>65166,48052.096125</TimeChanged>
 <TimeCreated>65165,58381.887935</TimeCreated>
 
 <Property name="name">
@@ -173,12 +212,22 @@
 
 <Property name="phoneNumber">
 <Type>%String</Type>
-<Parameter name="PATTERN" value="9N"/>
+<Parameter name="POPSPEC" value="USPhone()"/>
+</Property>
+
+<Property name="street">
+<Type>%String</Type>
+<Parameter name="POPSPEC" value="Street()"/>
 </Property>
 
 <Property name="emailAddress">
 <Type>%String</Type>
-<Parameter name="PATTERN" value="5.10A&quot;@gmail.com&quot;"/>
+<Parameter name="POPSPEC" value="##class(Sbd.Customer).getRandomEmail()"/>
+</Property>
+
+<Property name="sex">
+<Type>%String</Type>
+<Parameter name="VALUELIST" value=",Male,Female"/>
 </Property>
 
 <Property name="orders">
@@ -187,6 +236,20 @@
 <Inverse>customer</Inverse>
 <Relationship>1</Relationship>
 </Property>
+
+<Method name="getRandomEmail">
+<ClassMethod>1</ClassMethod>
+<ReturnType>%String</ReturnType>
+<Implementation><![CDATA[
+	set tmpList = $LISTBUILD("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z")
+	set loopend = $RANDOM(5)+5
+	set result = ""
+	For i=1:1: loopend{
+		set result = result _ $LIST(tmpList, $RANDOM($LISTLENGTH(tmpList)) + 1)
+	}
+	return result _ "@qmail.com"
+]]></Implementation>
+</Method>
 
 <Storage name="Default">
 <Type>%Library.CacheStorage</Type>
@@ -209,6 +272,12 @@
 <Value name="4">
 <Value>emailAddress</Value>
 </Value>
+<Value name="5">
+<Value>street</Value>
+</Value>
+<Value name="6">
+<Value>sex</Value>
+</Value>
 </Data>
 <Property name="%%CLASSNAME">
 <Selectivity>100.0000%</Selectivity>
@@ -216,19 +285,27 @@
 </Property>
 <Property name="%%ID">
 <Selectivity>1</Selectivity>
-<AverageFieldSize>2</AverageFieldSize>
+<AverageFieldSize>3</AverageFieldSize>
 </Property>
 <Property name="emailAddress">
 <Selectivity>10.0000%</Selectivity>
-<AverageFieldSize>4.7</AverageFieldSize>
+<AverageFieldSize>17</AverageFieldSize>
 </Property>
 <Property name="name">
 <Selectivity>10.0000%</Selectivity>
-<AverageFieldSize>16</AverageFieldSize>
+<AverageFieldSize>16.3</AverageFieldSize>
 </Property>
 <Property name="phoneNumber">
 <Selectivity>10.0000%</Selectivity>
-<AverageFieldSize>4.9</AverageFieldSize>
+<AverageFieldSize>12</AverageFieldSize>
+</Property>
+<Property name="sex">
+<Selectivity>50.0000%</Selectivity>
+<AverageFieldSize>5.6</AverageFieldSize>
+</Property>
+<Property name="street">
+<Selectivity>10.0000%</Selectivity>
+<AverageFieldSize>17</AverageFieldSize>
 </Property>
 <SQLMap name="IDKEY">
 <BlockCount>-4</BlockCount>
@@ -239,29 +316,71 @@
 
 <Class name="Sbd.GPU">
 <Super>Sbd.Component,%Populate,%Persistent</Super>
-<TimeChanged>65165,85396.706225</TimeChanged>
+<TimeChanged>65166,48052.847044</TimeChanged>
 <TimeCreated>65165,59777.641673</TimeCreated>
 
+<Property name="name">
+<Type>%String</Type>
+<Parameter name="POPSPEC" value="##class(Sbd.GPU).getRandomName()"/>
+</Property>
+
 <Property name="speed">
-<Type>%Float</Type>
-<Parameter name="MAXVAL" value="200"/>
-<Parameter name="MINVAL" value="3000"/>
+<Type>%Integer</Type>
+<Parameter name="POPSPEC" value="##class(Sbd.GPU).getRandomSpeed()"/>
 </Property>
 
 <Property name="ram">
 <Type>%Integer</Type>
-<Parameter name="MAXVAL" value="1"/>
-<Parameter name="MINVAL" value="16"/>
+<Parameter name="POPSPEC" value="##class(Sbd.GPU).getRandomRam()"/>
 </Property>
 
 <Property name="ramType">
 <Type>%String</Type>
-<Parameter name="VALUELIST" value="GDDR5,GDDR4,GDDR3,GDDR2,SDRAM,FPMRAM"/>
+<Parameter name="POPSPEC" value="##class(Sbd.GPU).getRandomRamType()"/>
 </Property>
 
 <Method name="getInfo">
 <ReturnType>%String</ReturnType>
 <Implementation><![CDATA[	return "Name: " _ ..name _ " RAM: " _ ..ram _ " RAM type: " _ ..ramType _ "Speed: " _ ..speed _ " Producer name: " _ ..producer.name
+]]></Implementation>
+</Method>
+
+<UDLText name="T">
+<Content><![CDATA[
+// Class Methods
+
+]]></Content>
+</UDLText>
+
+<Method name="getRandomName">
+<ClassMethod>1</ClassMethod>
+<ReturnType>%String</ReturnType>
+<Implementation><![CDATA[
+	set tmpList = $LISTBUILD("GTX 0","GTX 1080","RTX TURBO","RTXXX","RTX 999999 Ti","AXD")
+	return $LIST(tmpList, $RANDOM($LISTLENGTH(tmpList)) + 1)
+]]></Implementation>
+</Method>
+
+<Method name="getRandomRamType">
+<ClassMethod>1</ClassMethod>
+<ReturnType>%String</ReturnType>
+<Implementation><![CDATA[
+	set tmpList = $LISTBUILD("GDDR5","GDDR4","GDDR3","GDDR2","SDRAM","FPMRAM")
+	return $LIST(tmpList, $RANDOM($LISTLENGTH(tmpList)) + 1)
+]]></Implementation>
+</Method>
+
+<Method name="getRandomSpeed">
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Integer</ReturnType>
+<Implementation><![CDATA[	return $RANDOM(2800)+200
+]]></Implementation>
+</Method>
+
+<Method name="getRandomRam">
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Integer</ReturnType>
+<Implementation><![CDATA[	return $RANDOM(15)+1
 ]]></Implementation>
 </Method>
 
@@ -287,35 +406,35 @@
 </Property>
 <Property name="%%ID">
 <Selectivity>1</Selectivity>
-<AverageFieldSize>2</AverageFieldSize>
+<AverageFieldSize>4</AverageFieldSize>
 </Property>
 <Property name="name">
-<Selectivity>10.0000%</Selectivity>
-<AverageFieldSize>15.1</AverageFieldSize>
+<Selectivity>16.6667%</Selectivity>
+<AverageFieldSize>7.8</AverageFieldSize>
 </Property>
 <Property name="order">
-<Selectivity>20.0000%</Selectivity>
-<AverageFieldSize>2</AverageFieldSize>
+<Selectivity>12.5000%</Selectivity>
+<AverageFieldSize>3</AverageFieldSize>
 </Property>
 <Property name="price">
 <Selectivity>10.0000%</Selectivity>
-<AverageFieldSize>3.8</AverageFieldSize>
+<AverageFieldSize>3.7</AverageFieldSize>
 </Property>
 <Property name="producer">
-<Selectivity>20.0000%</Selectivity>
-<AverageFieldSize>2</AverageFieldSize>
+<Selectivity>12.5000%</Selectivity>
+<AverageFieldSize>3</AverageFieldSize>
 </Property>
 <Property name="ram">
-<Selectivity>10.0000%</Selectivity>
-<AverageFieldSize>8.9</AverageFieldSize>
+<Selectivity>14.2857%</Selectivity>
+<AverageFieldSize>1.3</AverageFieldSize>
 </Property>
 <Property name="ramType">
-<Selectivity>33.3333%</Selectivity>
-<AverageFieldSize>5</AverageFieldSize>
+<Selectivity>25.0000%</Selectivity>
+<AverageFieldSize>5.3</AverageFieldSize>
 </Property>
 <Property name="speed">
 <Selectivity>10.0000%</Selectivity>
-<AverageFieldSize>3.8</AverageFieldSize>
+<AverageFieldSize>3.7</AverageFieldSize>
 </Property>
 </Storage>
 </Class>
@@ -323,7 +442,7 @@
 
 <Class name="Sbd.Order">
 <Super>%Persistent,%Populate</Super>
-<TimeChanged>65165,85396.452247</TimeChanged>
+<TimeChanged>65166,48052.597052</TimeChanged>
 <TimeCreated>65165,58420.843095</TimeCreated>
 
 <Property name="orderId">
@@ -385,11 +504,11 @@
 </Property>
 <Property name="%%ID">
 <Selectivity>1</Selectivity>
-<AverageFieldSize>2</AverageFieldSize>
+<AverageFieldSize>3</AverageFieldSize>
 </Property>
 <Property name="customer">
-<Selectivity>14.2857%</Selectivity>
-<AverageFieldSize>2</AverageFieldSize>
+<Selectivity>20.0000%</Selectivity>
+<AverageFieldSize>3</AverageFieldSize>
 </Property>
 <Property name="orderDate">
 <Selectivity>100.0000%</Selectivity>
@@ -397,7 +516,7 @@
 </Property>
 <Property name="orderId">
 <Selectivity>10.0000%</Selectivity>
-<AverageFieldSize>9</AverageFieldSize>
+<AverageFieldSize>8.8</AverageFieldSize>
 </Property>
 <SQLMap name="IDKEY">
 <BlockCount>-4</BlockCount>
@@ -420,17 +539,17 @@
 
 <Class name="Sbd.Producer">
 <Super>%Persistent,%Populate</Super>
-<TimeChanged>65165,85396.204774</TimeChanged>
+<TimeChanged>65166,48052.346322</TimeChanged>
 <TimeCreated>65165,59208.742957</TimeCreated>
 
 <Property name="country">
 <Type>%String</Type>
-<Parameter name="VALUELIST" value="Poland, Germany, Togo, Nikaragua, North Korea"/>
+<Parameter name="POPSPEC" value="##class(Sbd.Producer).getRandomCountry()"/>
 </Property>
 
 <Property name="name">
 <Type>%String</Type>
-<Parameter name="VALUELIST" value="Intel, Nvidia, AMD, IBM, Microsoft, InterSystems"/>
+<Parameter name="POPSPEC" value="Company()"/>
 </Property>
 
 <Property name="founded">
@@ -449,6 +568,22 @@
 <Inverse>producer</Inverse>
 <Relationship>1</Relationship>
 </Property>
+
+<UDLText name="T">
+<Content><![CDATA[
+// Class methods
+
+]]></Content>
+</UDLText>
+
+<Method name="getRandomCountry">
+<ClassMethod>1</ClassMethod>
+<ReturnType>%String</ReturnType>
+<Implementation><![CDATA[
+	set tmpList = $LISTBUILD("Poland","Germany","Togo","Nikaragua","North Korea")
+	return $LIST(tmpList, $RANDOM($LISTLENGTH(tmpList)) + 1)
+]]></Implementation>
+</Method>
 
 <Storage name="Default">
 <Type>%Library.CacheStorage</Type>
@@ -478,11 +613,11 @@
 </Property>
 <Property name="%%ID">
 <Selectivity>1</Selectivity>
-<AverageFieldSize>2</AverageFieldSize>
+<AverageFieldSize>3</AverageFieldSize>
 </Property>
 <Property name="country">
-<Selectivity>10.0000%</Selectivity>
-<AverageFieldSize>5</AverageFieldSize>
+<Selectivity>20.0000%</Selectivity>
+<AverageFieldSize>7</AverageFieldSize>
 </Property>
 <Property name="founded">
 <Selectivity>10.0000%</Selectivity>
@@ -490,7 +625,7 @@
 </Property>
 <Property name="name">
 <Selectivity>10.0000%</Selectivity>
-<AverageFieldSize>16.2</AverageFieldSize>
+<AverageFieldSize>16</AverageFieldSize>
 </Property>
 <SQLMap name="IDKEY">
 <BlockCount>-4</BlockCount>
